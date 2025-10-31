@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+import undetected_chromedriver as uc
 from time import sleep
 from utils.logger import get_logger
 
@@ -16,18 +17,15 @@ class IndeedBot:
         self.keywords = keywords
         self.location = location
 
-        chrome_opts = Options()
-        chrome_opts.add_argument("--start-maximized")
-        service = Service()
-        self.driver = webdriver.Chrome(service=service, options=chrome_opts)
+        self.driver = uc.Chrome()
 
     def login(self):
         logger.info("logging Indeed...")
         self.driver.get("https://secure.indeed.com/account/login")
         sleep(2)
         self.driver.find_element(By.NAME, "__email").send_keys(self.email)
-        self.driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
-        sleep(4)
+        # self.driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+        input("Press Enter after completing CAPTCHA...")
 
     def search_jobs(self):
         logger.info(f"search position：{self.keywords} - {self.location}")
